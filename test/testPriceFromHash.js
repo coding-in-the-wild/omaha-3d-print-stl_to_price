@@ -1,7 +1,7 @@
 ﻿var test = require('tap').test
 var Database = require("../../omaha-3d-print-database/mock.js")
 var db = new Database()
-var PriceFromHash = require("../price-from-hash.js")
+var PriceFromHash = require("../priceFromHash.js")
 
 var fakeHash = "Md5HashesAre32CharactersInLength"
 var fakeObj = { volume: 16387 }
