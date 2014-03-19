@@ -1,0 +1,30 @@
+{
+  "name": "omaha-3d-print-stl_to_price",
+  "version": "0.0.1",
+  "main": "./index.js",
+  "author": {
+    "name": "ArtskydJ",
+    "email": "josephdykstra@gmail.com"
+  },
+  "description": "n/a",
+  "keywords": [
+    "omaha",
+    "hash",
+	"price"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ArtskydJ/omaha-3d-print-stl_to_price.git"
+  },
+  "devDependencies": {
+    "tap": "~0.4.8"
+  },
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "tap ./test/*.js"
+  },
+  "dependencies": {
+  }
+}
