@@ -11,7 +11,7 @@ module.exports = function getStl(callback) {
 	var FILE_PATH = './stl_files/'
 	var options = {
 		hostname: '192.168.0.1',
-		port: 8080,
+		port: 80,
 		path: '/upload',
 		method: 'POST'
 	}
