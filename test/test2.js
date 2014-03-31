@@ -1,26 +1,19 @@
 ﻿var fs = require('fs')
-var md5 = require('crypto').createHash('md5')
-var priceFromHash = require("./priceFromHash.js")
-var FILE_PATH = './'
+var saveAndHashFile = require('../saveAndHashFile.js')
 
-var callback = function callback(arg1, arg2) {
-	console.log('arg1: ' + arg1 + ', arg2: ' + arg2)
+if (0) {
+	var readStream = fs.createReadStream('./test2helper.js', {encoding:"utf8"})
+} else {
+	var readStream = fs.createReadStream('./companion-cube.stl')
 }
 
-var readStream = fs.createReadStream('./test2helper.js', {encoding:"utf8"})
-var file = fs.createWriteStream(FILE_PATH + 'temp.js')
-var hash = ''
-
-readStream.on('data', function(data) {
-	console.log("chunk: " + data);
-	file.write(data)
-	md5.update(data)
-}).on('end', function() {
-	file.end()
-	hash = md5.digest('hex')
-	console.log(FILE_PATH + hash + '.js')
-}).on('finish', function() {
-	file.rename(FILE_PATH + 'temp.js', FILE_PATH + hash + '.js', function() {
-		priceFromHash(hash, callback)
-	})
+saveAndHashFile(readStream, './', '.stl', function(err, price, hash, path) {
+	console.log('error:')
+	console.dir(err)
+	console.log('price:')
+	console.dir(price)
+	console.log('hash:')
+	console.dir(hash)
+	console.log('path:')
+	console.dir(path)
 })
