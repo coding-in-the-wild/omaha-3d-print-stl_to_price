@@ -6,6 +6,7 @@ var http = require("http")
 var priceFromHash = require("./priceFromHash.js")
 var stream = require("stream")
 var url = require('url')
+var saveAndHashFile = require('./saveAndHashFile.js')
 
 module.exports = function getStl(callback) {
 	var FILE_PATH = './stl_files/'
@@ -30,23 +31,21 @@ module.exports = function getStl(callback) {
 				var file_name = 'thefilenamecomesrightfromthehash'
 				var file = fs.createWriteStream(FILE_PATH + file_name)
 
-				http.get(options, function(res) { //get the file
-					res.on('data', function(data) {
-						file.write(data) //save to disc
-						md5.update(data)
-					}).on('end', function() {
-						file.end()
-						hash = md5.digest('hex') //use hasher to hash it
-						console.log(file_name + ' downloaded to ' + FILE_PATH +
-							'and has this hash: ' + hash)
-						priceFromHash(hash, callback)
-					})
+				var readStream = http.get(options, function(res) { //get the file
+					console.log('error:')
+					console.dir(err)
+					console.log('price:')
+					console.dir(price)
+					console.log('hash:')
+					console.dir(hash)
+					console.log('path:')
+					console.dir(path)
 				})
+				saveAndHashFile(readStream, readpath, './stl_files', '.stl', callback)
 			}
 		}
 	})
 }
-
 
 
 //var file_name = url.parse(file_url).pathname.split('/').pop()
