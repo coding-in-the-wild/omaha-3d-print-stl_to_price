@@ -6,7 +6,7 @@ var PriceFromHash = require("./priceFromHash.js")
 var priceFromHash = new PriceFromHash(db)
 var runAdmesh = require('../admesh-parser/runAdmesh.js')
 
-module.exports = function saveAndHashFile(inStream, readPath, writePath, extension, callback) {
+module.exports = function saveAndHashFile(inStream, writePath, extension, callback) {
 	if (extension.indexOf('.') !== 0) {
 		extension = '.stl'
 	}
@@ -18,7 +18,7 @@ module.exports = function saveAndHashFile(inStream, readPath, writePath, extensi
 		hash = md5.digest('hex')
 		file.end(null, null, function(err) {
 			if (!err) {
-				runAdmesh('', readPath, function (err, admeshObj) {
+				runAdmesh('', writePath + 'temp' + extension, function (err, admeshObj) {
 					if (!err) {
 						fs.rename(writePath + 'temp' + extension, writePath + hash + extension, function(err) {
 							if (!err) {

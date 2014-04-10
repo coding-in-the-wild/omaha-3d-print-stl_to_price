@@ -1,51 +1,82 @@
 ﻿var exec = require('child_process').exec
 var spawn = require('child_process').spawn
 var md5 = require('crypto').createHash('md5')
-var fs = require('fs')
 var http = require("http")
 var priceFromHash = require("./priceFromHash.js")
 var stream = require("stream")
 var url = require('url')
+
+var test = require('tap').test
+var fs = require('fs')
+var util = require('util')
 var saveAndHashFile = require('./saveAndHashFile.js')
+var writePath = './stl_files/'
+var ext = '.js'
+var fakeHash = 'Md5HashesAre32CharactersInLength'
 
-module.exports = function getStl(callback) {
-	var FILE_PATH = './stl_files/'
-	var options = {
-		hostname: '192.168.0.1',
-		port: 80,
-		path: '/upload',
-		method: 'POST'
-	}
+console.log("1")
+var rStream = http.createServer(function(req, res) {
+	console.log("4")
+	console.log("req")
+	console.dir(req)
+	console.log("res")
+	console.dir(res)
+	console.log("5")
 	
-	http.request(options, function(res) {
-		//idk
-	}).on('post', function parse() {
-		console.log("req: "+req)
-		if (req === "post") {
-			var hash = ""
-			url.parse(reqStr).pathname.split("/")
-			if (url.parse(reqStr).pathname.split("/")[1] === "stl") {
-				hash = url.parse(reqStr).pathname.split("/").pop()
-				priceFromHash(hash, callback)
-			} else {
-				var file_name = 'thefilenamecomesrightfromthehash'
-				var file = fs.createWriteStream(FILE_PATH + file_name)
-
-				var readStream = http.get(options, function(res) { //get the file
-					console.log('error:')
-					console.dir(err)
-					console.log('price:')
-					console.dir(price)
-					console.log('hash:')
-					console.dir(hash)
-					console.log('path:')
-					console.dir(path)
-				})
-				saveAndHashFile(readStream, readpath, './stl_files', '.stl', callback)
-			}
-		}
+	saveAndHashFile(rStream, writePath, ext, function(err, object) {
+		console.log("6")
+		t.notOk(err, 'no error')
+		t.equal(object.price, 5.0175780752, 'price is correct')
+		t.equal(object.hash, 'd372818be56327b94ad912f903b33b2f', 'hash is correct')
+		console.log("7")
 	})
+}).listen(8080)
+console.log("2")
+console.dir(rStream)
+console.log("3")
+//http.request() returns an instance of the http.ClientRequest class.
+//The ClientRequest instance is a writable stream.
+//If one needs to upload a file with a POST request,
+//then write to the ClientRequest object.
+
+var options = {
+  hostname: 'www.google.com',
+  port: 80,
+  path: 'server/stl/' + fakeHash,
+  method: 'POST'
 }
 
+var req = http.request(options, function(res) {
+	console.log("8")
+	console.log("i have no idea what this means")
+	res.on('data', function (chunk) {
+		console.log('res BODY: ' + chunk);
+		console.log("9")
+	})
+}).on('response', function(blah) {
+	console.log("10")
+	console.log("i have no idea what this means either")
+})
 
-//var file_name = url.parse(file_url).pathname.split('/').pop()
+/*
+
+****eg****
+
+var req = http.request(options, function(res) {
+  console.log('STATUS: ' + res.statusCode)
+  console.log('HEADERS: ' + JSON.stringify(res.headers))
+  res.setEncoding('utf8')
+  res.on('data', function (chunk) {
+    console.log('BODY: ' + chunk)
+  })
+})
+
+req.on('error', function(e) {
+  console.log('problem with request: ' + e.message)
+})
+
+// write data to request body
+req.write('data\n')
+req.write('data\n')
+req.end()
+*/
