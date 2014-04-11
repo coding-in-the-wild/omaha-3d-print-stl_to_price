@@ -1,4 +1,4 @@
-var getPrice = require("../omaha-3d-print-price_calculator/getPrice.js")
+var getPrice = require("3d-print-price-calculator")
 
 module.exports = function PriceFromHash(database) {
 	return function priceFromHash(hash, callback) {

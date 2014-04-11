@@ -35,6 +35,8 @@ var options = {
   method: 'POST'
 }
 
+//fs.getfile("whateverfile").pipe(http.request(options, funciton(res) { //blah
+
 http.request(options, function(res) {
 	console.log("4 i have no idea what this means")
 	res.on('data', function (chunk) {
