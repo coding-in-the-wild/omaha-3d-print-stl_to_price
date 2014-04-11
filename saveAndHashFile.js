@@ -1,6 +1,6 @@
 ﻿var fs = require('fs')
 var md5 = require('crypto').createHash('md5')
-var Database = require("omaha-3d-print-database").mock //make this work
+var Database = require("omaha-3d-print-database") //.mock //make this work
 var db = new Database()
 var PriceFromHash = require("./priceFromHash.js")
 var priceFromHash = new PriceFromHash(db)
