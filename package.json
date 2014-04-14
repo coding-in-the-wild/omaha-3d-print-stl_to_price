@@ -26,5 +26,7 @@
     "test": "tap ./test/*.js"
   },
   "dependencies": {
+    "3d-print-price-calculator": "~0.0.1",
+    "omaha-3d-print-database": "~0.1.2"
   }
 }
