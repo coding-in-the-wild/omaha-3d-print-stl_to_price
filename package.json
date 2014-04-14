@@ -10,7 +10,8 @@
   "keywords": [
     "omaha",
     "hash",
-	"price"
+	"price",
+	"stl"
   ],
   "repository": {
     "type": "git",
@@ -27,6 +28,7 @@
   },
   "dependencies": {
     "3d-print-price-calculator": "~0.0.1",
-    "omaha-3d-print-database": "~0.1.2"
+    "omaha-3d-print-database": "~0.1.2",
+	"admesh-parser" : "~1.0.0"
   }
 }

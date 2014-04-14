@@ -1,12 +1,12 @@
 ﻿var fs = require('fs')
 var md5 = require('crypto').createHash('md5')
-var Database = require("omaha-3d-print-database") //.mock //make this work
-var db = new Database()
-var PriceFromHash = require("./priceFromHash.js")
-var priceFromHash = new PriceFromHash(db)
+
 var runAdmesh = require('admesh-parser')
 
-module.exports = function saveAndHashFile(inStream, writePath, extension, callback) {
+module.exports = function saveAndHashFile(inStream, writePath, extension, database, callback) {
+	var PriceFromHash = require("./priceFromHash.js")
+	var priceFromHash = new PriceFromHash(database)
+
 	if (extension.indexOf('.') !== 0) {
 		extension = '.stl'
 	}
@@ -22,7 +22,7 @@ module.exports = function saveAndHashFile(inStream, writePath, extension, callba
 					if (!err) {
 						fs.rename(writePath + 'temp' + extension, writePath + hash + extension, function(err) {
 							if (!err) {
-								db.insert(hash, admeshObj, function () {
+								database.insert(hash, admeshObj, function () {
 									priceFromHash(hash, function(price) {
 										callback(false, {
 											price: price,

@@ -1,5 +1,5 @@
 ﻿var test = require('tap').test
-var Database = require("../../omaha-3d-print-database/mock.js")
+var Database = require('omaha-3d-print-database')
 var db = new Database()
 var PriceFromHash = require("../priceFromHash.js")
 
