@@ -1,18 +1,27 @@
 ﻿var md5 = require('crypto').createHash('md5')
 var fs = require('fs')
 var save = require('./1-save.js')
+var db = require('./2-database.js')
 
-module.exports = function (stream, obj, cb) {
-	var file = fs.createWriteStream(obj.tempPath)
+module.exports = function (stream, path, ext, tempPath, cb) {
+	var file = fs.createWriteStream(tempPath)
 	stream.on('data', function(data) {
 		md5.update(data)
 		file.write(data)
 	}).on('end', function() {
-		obj.hash = md5.digest('hex')
-		obj.newPath = obj.path+obj.hash+obj.ext
-		file.end(null, null, function(err) {
-			if (err) cb(err, result)
-			else     save(obj, cb)
+		var hash = md5.digest('hex')
+		var newPath = path+hash+ext
+		file.end(null, null, function(err1) {
+			if (err1)
+				cb(err1, result)
+			else
+				save(tempPath, newPath, function (err2, obj) {
+					if (err2)
+						cb(err2, obj)
+					else db(obj, function (err3, price) {
+						cb(false, price)
+					})
+			})
 		})
 	})
 }

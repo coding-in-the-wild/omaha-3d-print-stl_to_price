@@ -1,20 +1,20 @@
 ﻿var test = require('tap').test
-var fs = require('fs')
+var http = require('http')
 var saveAndHashFile = require('../index.js')
 var file = '../stl_files/companion-cube-2.stl'
-var opts = {
+var obj = {
 	path: '../stl_files/',
 	ext: '.stl',
 	tempPath: '../stl_files/temp.stl'
 }
-var stream = fs.createReadStream(file)
+var stream = http.get('http://www.thingiverse.com/download:95619')
 
 test("test getting a price from a hash", function test1(t) {
 	t.plan(3)
-	saveAndHashFile(stream, opts.path, opts.ext, opts.tempPath, function(err, price, hash) {
+	saveAndHashFile(stream, obj, function(err, object) {
 		console.log(err)
 		t.notOk(err, 'no error')
-		t.equal(price, 5.0175780752, 'price is correct')
-		t.equal(hash, 'd372818be56327b94ad912f903b33b2f', 'hash is correct')
+		t.equal(object.price, 5.0175780752, 'price is correct')
+		t.equal(object.hash, 'd372818be56327b94ad912f903b33b2f', 'hash is correct')
 	})
 })
