@@ -1,26 +1,18 @@
-﻿var md5 = require('crypto').createHash('md5')
-var fs = require('fs')
-var save = require('./1-save.js')
-var db = require('./2-database.js')
+﻿var admeshDir = '"C:/Program Files (x86)/admesh/admesh.exe"'
+var saveAndHashStream = require('./saveAndHashStream.js')
+var rename = require('./renameFile.js')
+var runAdmesh = require('admesh-parser')
+var db = require('./addToDatabase.js')
 
 module.exports = function (stream, path, ext, tempPath, cb) {
-	var file = fs.createWriteStream(tempPath)
-	stream.on('data', function(data) {
-		md5.update(data)
-		file.write(data)
-	}).on('end', function() {
-		var hash = md5.digest('hex')
+	saveAndHashStream(stream, tempPath, cb, function(hash) {
 		var newPath = path+hash+ext
-		file.end(null, null, function(err1) {
-			if (err1)
-				cb(err1, hash)
-			else
-				save(tempPath, newPath, function(err2, obj) {
-					if (err2)
-						cb(err2, hash)
-					else db(hash, obj, function(err3, price) {
-						cb(err3, hash, price)
-					})
+		rename(tempPath, newPath, cb, function() {
+			runAdmesh(admeshDir, '"'+newPath+'"', function(err0, obj) {
+				if (err0) cb(err0, hash)
+				else db(hash, obj, function(err1, price) {
+					cb(err1, hash, price)
+				})
 			})
 		})
 	})
