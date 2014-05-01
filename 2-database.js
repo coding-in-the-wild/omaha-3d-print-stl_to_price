@@ -4,8 +4,6 @@ module.exports = function db(hash, admeshObj, cb) {
 	var PriceFromHash = new require("./priceFromHash.js")
 	var priceFromHash =  PriceFromHash(database)
 	database.insert(hash, admeshObj, function () {
-		priceFromHash(hash, function(price) {
-			cb(false, price, hash)
-		})
+		priceFromHash(hash, cb)
 	})
 }

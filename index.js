@@ -13,13 +13,13 @@ module.exports = function (stream, path, ext, tempPath, cb) {
 		var newPath = path+hash+ext
 		file.end(null, null, function(err1) {
 			if (err1)
-				cb(err1, result)
+				cb(err1, hash)
 			else
-				save(tempPath, newPath, function (err2, obj) {
+				save(tempPath, newPath, function(err2, obj) {
 					if (err2)
-						cb(err2, obj)
-					else db(obj, function (err3, price) {
-						cb(false, price)
+						cb(err2, hash)
+					else db(hash, obj, function(err3, price) {
+						cb(err3, hash, price)
 					})
 			})
 		})

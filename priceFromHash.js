@@ -5,7 +5,7 @@ module.exports = function PriceFromHash(database) {
 		database.get(hash, function(err, result) {
 			if (!err) {
 				if (result != null && typeof result === "object") {
-					callback( getPrice({}, result) )
+					callback( false, getPrice({}, result) )
 				} else {
 					callback( new Error("'get' returned wrong data") )
 				}
