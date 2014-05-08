@@ -1,6 +1,5 @@
 ﻿var test = require('tap').test
 var request = require('supertest')
-var express = require('express')
 var saveAndHashFile = require('../index.js')
 var file = '../stl_files/companion-cube-2.stl'
 var obj = {
@@ -12,12 +11,16 @@ var obj = {
 
 test("test getting a price from a hash", function test1(t) {
 	t.plan(3)
-	var app = express()
-	app.listen(8080)
+	http.createServer(function (req, res) {
+		if (req.method === 'POST') {
+			t.ok(true, "post method")
+			t.end()
+		}
+	})
+	//.listen(8080)
 	
-	request(app)
-		.post('/d372818be56327b94ad912f903b33b2f')
-		.attach('avatar', file)
+	//'/stl/'
+	//'d372818be56327b94ad912f903b33b2f')
 	saveAndHashFile(stream, obj, function(err, object) {
 	})
 })
