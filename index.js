@@ -5,15 +5,21 @@ var runAdmesh = require('admesh-parser')
 var db = require('./addToDatabase.js')
 
 module.exports = function (stream, path, ext, tempPath, cb) {
-	saveAndHashStream(stream, tempPath, cb, function(hash) {
-		var newPath = path+hash+ext
-		rename(tempPath, newPath, cb, function() {
-			runAdmesh(admeshDir, '"'+newPath+'"', function(err0, obj) {
-				if (err0) cb(err0, hash)
-				else db(hash, obj, function(err1, price) {
-					cb(err1, hash, price)
-				})
+	saveAndHashStream(stream, tempPath, function(err, hash) {
+		if (err) cb(err)
+		else {
+			var newPath = path+hash+ext
+			rename(tempPath, newPath, function() {
+				if (err) cb(err)
+				else {
+					runAdmesh(admeshDir, '"'+newPath+'"', function(err0, obj) {
+						if (err) cb(err, hash)
+						else db(hash, obj, function(err, price) {
+							cb(err, hash, price)
+						})
+					})
+				}
 			})
-		})
+		}
 	})
 }

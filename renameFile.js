@@ -1,10 +1,7 @@
 ﻿var fs = require('fs')
 
-module.exports = function renameFile(tempPath, newPath, badCb, goodCb) {
+module.exports = function renameFile(tempPath, newPath, cb) {
 	fs.rename(tempPath, newPath, function(err) {
-		if (err)
-			badCb(err)
-		else
-			goodCb()
+		cb(err)
 	})
 }
